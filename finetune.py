@@ -132,14 +132,15 @@ if not ft_config.skip:
         learning_rate=ft_config.lr,
         fp16=True,
         logging_steps=ft_config.logging_steps,
-        evaluation_strategy="no",
         save_strategy="steps",
-        eval_steps=None,
+        evaluation_strategy="steps",
+        eval_steps=ft_config.eval_steps,
         save_steps=ft_config.save_steps,
         output_dir=ft_config.lora_out_dir,
         save_total_limit=ft_config.save_total_limit,
         load_best_model_at_end=False,
         ddp_find_unused_parameters=False if ft_config.ddp else None,
+        report_to="wandb" if ft_config.wandb else None,
     )
 
     trainer = transformers.Trainer(

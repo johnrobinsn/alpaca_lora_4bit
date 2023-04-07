@@ -2,7 +2,7 @@ import torch
 
 from abc import ABC, abstractmethod
 from typing import Dict, Any
-from datasets import load_dataset, Dataset
+from datasets import load_dataset, Dataset, concatenate_datasets, DatasetDict
 from torch.utils.data import DataLoader
 from transformers import DefaultDataCollator
 import os
@@ -167,13 +167,44 @@ class TrainSAD(ATrainData):
             train_val = data["train"].train_test_split(
                 test_size=self.val_set_size, shuffle=True, seed=42  # ! Seed = 42 (?)
             )
-            self.train_data = train_val["train"].shuffle().map(lambda x: self.generate_and_tokenize_prompt(x, use_eos_token=use_eos_token))
+
+            # Duplicate the dataset using the DatasetDict class with same splits
+            train_val2 = DatasetDict({"train": train_val["train"], "test": train_val["test"]})
+
+            #self.train_data = train_val["train"].shuffle().map(lambda x: self.generate_and_tokenize_prompt(x, use_eos_token=use_eos_token))
+            forward_data = train_val["train"].map(lambda x: self.generate_and_tokenize_prompt(x, use_eos_token=use_eos_token))
+            reverse_data = train_val2["train"].map(lambda x: self.generate_and_tokenize_inverted_prompt(x, use_eos_token=use_eos_token))
+            self.train_data = concatenate_datasets([forward_data,reverse_data]).shuffle()
+
             self.val_data = train_val["test"].shuffle().map(lambda x: self.generate_and_tokenize_prompt(x, use_eos_token=use_eos_token))
         else:
             self.train_data = data["train"].shuffle().map(lambda x: self.generate_and_tokenize_prompt(x, use_eos_token=use_eos_token))
             self.val_data = None
 
+        # print()
+
+
+        # print('traindata:', len(self.train_data))
+        # print('traindata sample:', self.train_data[0])
+
+        # # print('reverse traindata:', reverse_data[0])
+        # # print('valdata:', len(self.val_data))
+        # # print('quitting')
+        # exit()
+
     # Auxiliary methods
+
+    def generate_inverted_prompt(self, data_point, **kwargs):
+        return "{0}\n\n{1}\n{2}\n\n{3}\n{4}\n\n{5}\n{6}".format(
+            "Below is a response that successfully addresses a specific task.  Write the instructions that coorespond to the given response, detailing the task it aims to complete.",
+            "### Response:",
+            data_point["output"],
+            "### Instruction:",
+            data_point["instruction"],
+            "### Input:",
+            data_point["input"]
+        )
+
     def generate_prompt(self, data_point, **kwargs):
         return "{0}\n\n{1}\n{2}\n\n{3}\n{4}\n\n{5}\n{6}".format(
             "Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.",
@@ -184,6 +215,10 @@ class TrainSAD(ATrainData):
             "### Response:",
             data_point["output"]
         )
+
+    def generate_and_tokenize_inverted_prompt(self, data_point, **kwargs):
+        prompt = self.generate_inverted_prompt(data_point, **kwargs)
+        return self.tokenize(prompt, **kwargs)
 
     def generate_and_tokenize_prompt(self, data_point, **kwargs):
         prompt = self.generate_prompt(data_point, **kwargs)

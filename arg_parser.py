@@ -50,12 +50,14 @@ def parse_commandline():
     parser_training.add_argument("--grad_chckpt_ratio", default=1, type=float, help="Gradient checkpoint ratio. Default: %(default)s")
     parser_training.add_argument("--val_set_size", default=0.2, type=float, help="Validation set size. Default: %(default)s")
     parser_training.add_argument("--warmup_steps", default=50, type=int, help="Default: %(default)s")
+    parser_training.add_argument("--eval_steps", default=500, type=int, help="Default: %(default)s")
     parser_training.add_argument("--save_steps", default=50, type=int, help="Default: %(default)s")
     parser_training.add_argument("--save_total_limit", default=3, type=int, help="Default: %(default)s")
     parser_training.add_argument("--logging_steps", default=10, type=int, help="Default: %(default)s")
     parser_training.add_argument("-c", "--checkpoint", action="store_true", help="Produce checkpoint instead of LoRA. Default: %(default)s")
     parser_training.add_argument("--skip", action="store_true", help="Don't train model. Can be useful to produce checkpoint from existing LoRA. Default: %(default)s")
     parser_training.add_argument("--verbose", action="store_true", help="If output log of training. Default: %(default)s")
+    parser_training.add_argument("--wandb", action="store_false", help="If use wandb. Default: %(default)s")
 
     # Data args
     parser_training.add_argument("--txt_row_thd", default=-1, type=int, help="Custom thd for txt rows.")
@@ -101,6 +103,7 @@ def get_config() -> Finetune4bConfig:
         save_steps=args["save_steps"],
         save_total_limit=args["save_total_limit"],
         logging_steps=args["logging_steps"],
+        eval_steps=args["eval_steps"],
         checkpoint=args["checkpoint"],
         skip=args["skip"],
         verbose=args["verbose"],
@@ -110,4 +113,5 @@ def get_config() -> Finetune4bConfig:
         local_rank=args["local_rank"],
         flash_attention=args["flash_attention"],
         backend=args["backend"],
+        wandb=args["wandb"]
     )

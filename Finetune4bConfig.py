@@ -12,10 +12,10 @@ class Finetune4bConfig:
                  val_set_size: float,
                  gradient_checkpointing: bool,
                  gradient_checkpointing_ratio: float,
-                 warmup_steps: int, save_steps: int, save_total_limit: int, logging_steps: int,
+                 warmup_steps: int, save_steps: int, save_total_limit: int, logging_steps: int, eval_steps: int,
                  checkpoint: bool, skip: bool, verbose: bool,
                  txt_row_thd: int, use_eos_token: bool, groupsize: int,
-                 local_rank: int, flash_attention: bool, backend: str
+                 local_rank: int, flash_attention: bool, backend: str, wandb: bool
                  ):
         """
         Args:
@@ -73,6 +73,7 @@ class Finetune4bConfig:
         self.save_steps = save_steps
         self.save_total_limit = save_total_limit
         self.logging_steps = logging_steps
+        self.eval_steps = eval_steps
         self.checkpoint = checkpoint
         self.skip = skip
         self.verbose = verbose
@@ -87,6 +88,7 @@ class Finetune4bConfig:
         self.groupsize = groupsize
         self.flash_attention = flash_attention
         self.backend = backend
+        self.wandb = wandb
 
 
     def __str__(self) -> str:
@@ -97,6 +99,7 @@ class Finetune4bConfig:
         f"{self.gradient_checkpointing=}\n{self.gradient_checkpointing_ratio=}\n" +\
         f"{self.warmup_steps=}\n{self.save_steps=}\n{self.save_total_limit=}\n" +\
         f"{self.logging_steps=}\n" +\
+        f"{self.eval_steps=}\n" +\
         f"{self.checkpoint=}\n{self.skip=}\n" +\
         f"{self.world_size=}\n{self.ddp=}\n{self.device_map=}\n" +\
         f"{self.groupsize=}\n{self.backend=}\n"
