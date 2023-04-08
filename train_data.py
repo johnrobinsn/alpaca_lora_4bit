@@ -161,7 +161,7 @@ class TrainSAD(ATrainData):
             }
 
     def prepare_data(self, use_eos_token=True, **kwargs) -> None:
-        data = load_dataset("json", data_files=self.dataset)
+        data = load_dataset(self.dataset)
 
         if self.val_set_size > 0:
             train_val = data["train"].train_test_split(
@@ -281,7 +281,7 @@ class TrainGPT4All(ATrainData):
         return out
 
     def prepare_data(self, **kwargs) -> None:
-        dataset = load_dataset("json", data_files=self.dataset)
+        dataset = load_dataset(self.dataset)
 
         self.val_data = None
         if self.val_set_size > 0:
