@@ -1,7 +1,7 @@
 # Finetuning Llama30b on a 24G card
 Here are some instructions on how to finetune Llama30B on a 24G card with the Alpaca dataset.
 
-_Note: Things are finally starting to stabilize a bit in the various repos.  But let me know if you run into snags with these instructions and I'll try update them._
+_Note: Things are finally starting to stabilize a bit in the various repos.  But let me know if you run into snags with these instructions and I'll try to update them._
 
 Three key things allow us to finetune Llama30B on a 24G card 
 1) Lora adapters (using huggingface's peft)
