@@ -51,6 +51,8 @@ My repo fork contains just a few small things on top of the upstream repo.
 * Enables using wandb (optional) for logging the training run
 * reenables eval during training
 * Doubles the alpaca dataset size by inverting the output/instructions.  This is a hack to get more data for training.
+* changed load_dataset calls so that the finetuning datasets can be loaded from HF hub
+* patch to allow triton backend to work with triton 2.0 (from pypi)
 
 ``` bash
 cd ..
