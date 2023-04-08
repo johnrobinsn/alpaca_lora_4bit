@@ -1,12 +1,16 @@
-# Finetuning llama30b on a 24G card
+# Finetuning Llama30b on a 24G card
+Here are some instructions on how to finetune Llama30B on a 24G card with the Alpaca dataset.
 
-Things are finally starting to stabilize a bit in the various repos.  But let me know if you run into snags with these instructions and I'll try update them.  The key things that allow us to finetune Llama30B on a 24G card this are lora adapters (using huggingface's peft) and int4 quantization.
+_Note: Things are finally starting to stabilize a bit in the various repos.  But let me know if you run into snags with these instructions and I'll try update them._
 
-Peft using Lora finetuning allow us to freeze the base model weights and add much smaller lower rank tensors to the model that can be finetuned this greatly reduces the memory needed to train the model since there are far fewer trainable parameters.
+Three key things allow us to finetune Llama30B on a 24G card 
+1) Lora adapters (using huggingface's peft)
+2) int4 quantization
+3) along with Cuda/Triton extensions for required int4 operations forward and autograd operations.
+
+Peft (using Lora finetuning) freezes the base model weights and adds much smaller lower rank tensors to the model that can be finetuned. This greatly reduces the amount of memory needed to train the model since there are far fewer trainable parameters.
 
 Int4 quantization allows us to reduce the memory needed for the weights by half over what can be achieved with int8 quantization.
-
-Here are some instructions on how to finetune Llama30B on a 24G card with the Alpaca dataset.
 
 ## Obtain the original Llama weights
 I was able to get them from the torrent listed in this open pull request on the llama repo
