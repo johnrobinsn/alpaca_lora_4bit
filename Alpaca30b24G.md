@@ -62,6 +62,14 @@ git clone https://github.com/johnrobinsn/alpaca_lora_4bit.git
 cd alpaca_lora_4bit
 pip install torch
 pip install -r requirements.txt
+```
+Finetune with alpaca dataset (instruction flipping enabled)
 
+``` bash
 CUDA_VISIBLE_DEVICES=1 python finetune.py --ds_type alpaca --groupsize 128 --grad_chckpt --llama_q4_config_dir ../GPTQ-for-LLaMa/llama-hf/llama-30b/ --llama_q4_model ../GPTQ-for-LLaMa/llama30b-4bit-128g.safetensors ./alpaca_data_cleaned.json --wandb
+```
+Finetune with gpt4all dataset instead
+
+``` bash
+python finetune.py --ds_type gpt4all --groupsize 128 --grad_chckpt --llama_q4_config_dir /mnt2/code/gptq4llama_230407/llama-hf/llama-30b/ --llama_q4_model /mnt2/code/gptq4llama_230407/llama30b-4bit-128g.safetensors --wandb nomic-ai/gpt4all_prompt_generations
 ```
