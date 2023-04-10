@@ -67,7 +67,7 @@ Finetune with alpaca dataset (instruction flipping enabled)
 _Note: Estimated time is 120 hours on my Titan RTX.  3 epochs._
 
 ``` bash
-CUDA_VISIBLE_DEVICES=1 python finetune.py --ds_type alpaca --groupsize 128 --grad_chckpt --llama_q4_config_dir ../GPTQ-for-LLaMa/llama-hf/llama-30b/ --llama_q4_model ../GPTQ-for-LLaMa/llama30b-4bit-128g.safetensors ./alpaca_data_cleaned.json --wandb
+CUDA_VISIBLE_DEVICES=1 python finetune.py --ds_type alpaca --groupsize 128 --grad_chckpt --llama_q4_config_dir ../GPTQ-for-LLaMa/llama-hf/llama-30b/ --llama_q4_model ../GPTQ-for-LLaMa/llama30b-4bit-128g.safetensors --wandb johnrobinsn/alpaca-cleaned
 ```
 Finetune with gpt4all dataset instead
 _Note: Estimated time is 600 hours on my Titan RTX.  3 epochs._
