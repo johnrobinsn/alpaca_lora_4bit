@@ -73,5 +73,5 @@ Finetune with gpt4all dataset instead
 _Note: Estimated time is 600 hours on my Titan RTX.  3 epochs._
 
 ``` bash
-python finetune.py --ds_type gpt4all --groupsize 128 --grad_chckpt --llama_q4_config_dir /mnt2/code/gptq4llama_230407/llama-hf/llama-30b/ --llama_q4_model /mnt2/code/gptq4llama_230407/llama30b-4bit-128g.safetensors --wandb nomic-ai/gpt4all_prompt_generations
+python finetune.py --ds_type gpt4all --groupsize 128 --grad_chckpt --llama_q4_config_dir ../GPTQ-for-LLaMa/llama-hf/llama-30b/ --llama_q4_model ../GPTQ-for-LLaMa/llama30b-4bit-128g.safetensors --wandb nomic-ai/gpt4all_prompt_generations
 ```
